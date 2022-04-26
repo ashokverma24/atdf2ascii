@@ -36,5 +36,5 @@ Python atdf2ascii.py -i input_file.tdf [options ...]
 
 NOTE:
 
-A manuscript describing this code's architecture, formulation, and usability has been submitted for publication in the MDPI Journal. 
+A manuscript describing this code's architecture, formulation, and usability has been submitted for publication in the SoftwareX Journal. 
 The citation information will be updated here once it has been accepted.  
