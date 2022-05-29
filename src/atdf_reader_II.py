@@ -1,41 +1,63 @@
 """
-Reference Document:
-    https://pds-geosciences.wustl.edu/radiosciencedocs/urn-nasa-pds-radiosci_documentation/DSN_TRK-2-25/
+Reference:
+
+            DOCUMENT 820-13;  REV A
+            DSN SYSTEM REQUIREMENTS
+     DETAILED SUNSYSTEM INTERFACE DESIGN
+
+                TRK-2-25
+
+        DSN TRACKING SYSTEM INTERFACES
+     ARCHIVAL TRACKING DATA FILE INTERFACE
+
+https://pds-geosciences.wustl.edu/radiosciencedocs/urn-nasa-pds-radiosci_documentation/dsn_trk-2-25/dsn_trk-2-25.1996-07-31.pdf
 
 AUTHOR:
 
-   Ashok Verma (ashokverma@ucla.edu)
-   Department of Earth, Planetary, and Space Sciences
-   University of California, Los Angeles
+   Dr. Ashok Kumar Verma (1,2)
+   1. Department of Earth, Planetary, and Space Sciences
+      University of California, Los Angeles, 90095, CA, USA.
+   2. NASA Goddard Space Flight Center, Greenbelt, 20771, MD, USA.
+   
+   Contact: ashokkumar.verma@nasa.gov
 
 """
 
-import binascii
-from functions import get_date
+from functions import get_date, MHz
 from decimal import Decimal as D
 
 
 # Header contents of Table 3-3 of ATDF file
-def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-    bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-    return bits.zfill(8 * ((len(bits) + 7) // 8))
+def update(_dict: dict,
+           key: str,
+           val: str):
+    """
+    Update dictionary value.
+    Args:
+        _dict: Dictionary to be updated.
+        key: Name of the key.
+        val: Value of the key.
+    """
+    _dict.update({key: val})
 
 
-def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
-    n = int(bits, 2)
-    return int2bytes(n).decode(encoding, errors)
+def get_dbl_var(hp: int = 0,
+                ip: int = 0,
+                lp: int = 0,
+                op: int = 0,
+                tp: int = 0) -> float:
+    """
+    Get double precision value.
+    Args:
+        hp: High part of the value.
+        ip: Intermediate part of the value.
+        lp: Low part of the value.
+        op: Part4 of the value.
+        tp: Type of double precision.
 
+    Returns: Double precision value of the variable.
 
-def int2bytes(i):
-    hex_string = '%x' % i
-    n = len(hex_string)
-    return binascii.unhexlify(hex_string.zfill(n + (n & 1)))
-
-
-def update(_dict, key, val): _dict.update({key: val})
-
-
-def get_dbl_var(hp=0, ip=0, lp=0, op=0, tp=0):
+    """
     if tp == 0: return float(D(ip) * D(10) ** -7 + D(lp) * D(10) ** -14)
     if tp == 1: return float(D(hp) * D(10) ** 8 + D(ip) * D(10) ** 1 + D(lp) * D(10) ** -6)
     if tp == 2: return float(D(hp) * D(10) ** 3 + D(lp) * D(10) ** -6)
@@ -43,6 +65,14 @@ def get_dbl_var(hp=0, ip=0, lp=0, op=0, tp=0):
 
 
 def get_table3_data(out_dict):
+    """
+    Extract values in accordance with the Table 3 of TRK-2-25 interface document.
+    Args:
+        out_dict: Output dictionary.
+
+    Returns: Dictionary with ascii values.
+
+    """
     data_dict = {}
     
     # Record Format
@@ -63,7 +93,7 @@ def get_table3_data(out_dict):
     update(data_dict, "station", str(out_dict['Item010']))
     
     # Receiver/Downlink Frequency Band
-    if out_dict['Item011'] == 0: band = "Ku"
+    if out_dict['Item011'] == 0: band = "NA"  # Not in use
     if out_dict['Item011'] == 1: band = "S"
     if out_dict['Item011'] == 2: band = "X"
     if out_dict['Item011'] == 3: band = "Ka"
@@ -206,11 +236,11 @@ def get_table3_data(out_dict):
     update(data_dict, "range_residual", out_dict['Item076'] * 1e-3)
     
     # Exciter/Uplink Frequency Band and Input Network/Source ID
-    if out_dict['Item079'] == 0: band = "Ku"
+    if out_dict['Item079'] == 0: band = "S1"  # Not in use
     if out_dict['Item079'] == 1: band = "S"
     if out_dict['Item079'] == 2: band = "X"
     if out_dict['Item079'] == 3: band = "Ka"
-    if out_dict['Item079'] == 7: band = "S2"
+    if out_dict['Item079'] == 7: band = "S2"  # Not in use
     update(data_dict, "uplink_band", band)
     
     # Numerator for Spacecraft Turnaround Ratio

@@ -10,49 +10,75 @@ Reference:
         DSN TRACKING SYSTEM INTERFACES
      ARCHIVAL TRACKING DATA FILE INTERFACE
 
+https://pds-geosciences.wustl.edu/radiosciencedocs/urn-nasa-pds-radiosci_documentation/dsn_trk-2-25/dsn_trk-2-25.1986-01-21.txt
+
 AUTHOR:
 
-   Ashok Verma (ashokverma@ucla.edu)
-   Department of Earth, Planetary, and Space Sciences
-   University of California, Los Angeles
+   Dr. Ashok Kumar Verma (1,2)
+   1. Department of Earth, Planetary, and Space Sciences
+      University of California, Los Angeles, 90095, CA, USA.
+   2. NASA Goddard Space Flight Center, Greenbelt, 20771, MD, USA.
+   
+   Contact: ashokkumar.verma@nasa.gov
 
 """
-import binascii
-from functions import get_date
+from functions import get_date, MHz
 from decimal import Decimal
 
 
 # Header contents of Table 3-3 of ATDF file
-def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-    bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-    return bits.zfill(8 * ((len(bits) + 7) // 8))
+def update(_dict: dict,
+           key: str,
+           val: str):
+    """
+    Update dictionary value.
+    Args:
+        _dict: Dictionary to be updated.
+        key: Name of the key.
+        val: Value of the key.
+    """
+    _dict.update({key: val})
 
 
-def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
-    n = int(bits, 2)
-    return int2bytes(n).decode(encoding, errors)
+def get_phase_count(val1: float,
+                    val2: float) -> float:
+    """
+    Get high precision phase count
+    Args:
+        val1: A float value.
+        val2: A float value.
 
+    Returns: phase count
 
-def int2bytes(i):
-    hex_string = '%x' % i
-    n = len(hex_string)
-    return binascii.unhexlify(hex_string.zfill(n + (n & 1)))
-
-
-def update(_dict, key, val): _dict.update({key: val})
-
-
-def get_phase_count(val1, val2):
+    """
     return float(Decimal(val1) * Decimal(10) ** 4 + Decimal(val2) * Decimal(10) ** -3)
 
 
-def ramp_freq(hp, lp):
+def ramp_freq(hp: float,
+              lp: float) -> float:
+    """
+    Get high precision frequency
+    Args:
+        hp: High part of the frequency.
+        lp: Low part of the frequency.
+
+    Returns: Double precision frequency.
+
+    """
     if hp == 0.0: return hp
     dp = float(Decimal(hp) * Decimal(10) ** 1 + Decimal(lp) * Decimal(10) ** -6)
     return dp
 
 
-def get_table3_data(out_dict):
+def get_table3_data(out_dict: dict) -> dict:
+    """
+    Extract values in accordance with the Table 3 of TRK-2-25 interface document.
+    Args:
+        out_dict: Output dictionary.
+
+    Returns: Dictionary with ascii values.
+
+    """
     data_dict = {}
     
     # Record Format
@@ -75,7 +101,7 @@ def get_table3_data(out_dict):
     update(data_dict, "station", str(out_dict['Item010']))
     
     # Receiver/Downlink Frequency Band
-    if out_dict['Item011'] == 0: band = "Ku"
+    if out_dict['Item011'] == 0: band = "NA" # Not in use
     if out_dict['Item011'] == 1: band = "S"
     if out_dict['Item011'] == 2: band = "X"
     if out_dict['Item011'] == 3: band = "Ka"
@@ -102,7 +128,7 @@ def get_table3_data(out_dict):
     update(data_dict, "doppler_valid", doppler_good)
     
     # Doppler Bias, Hz
-    update(data_dict, "doppler_bias", out_dict['Item020'] * 1e6)
+    update(data_dict, "doppler_bias", out_dict['Item020'] * MHz)
     
     # Frequency Level Indicator
     sky_level = False
@@ -203,11 +229,10 @@ def get_table3_data(out_dict):
     update(data_dict, "range_residual", out_dict['Item061'])
     
     # Exciter/Uplink Frequency Band and Input Network/Source ID
-    if out_dict['Item064'] == 0: band = "Ku"
+    if out_dict['Item064'] == 0: band = "S1" # Not in use
     if out_dict['Item064'] == 1: band = "S"
     if out_dict['Item064'] == 2: band = "X"
-    if out_dict['Item064'] == 3: band = "Ka"
-    if out_dict['Item064'] == 7: band = "S2"
+    if out_dict['Item064'] == 7: band = "S2" # Not in use
     update(data_dict, "uplink_band", band)
     
     # Numerator for Spacecraft Turnaround Ratio

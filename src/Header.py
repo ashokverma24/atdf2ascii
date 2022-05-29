@@ -1,15 +1,18 @@
 """
-Purpose:
-    This reads the header of the ATDF file.
+Header:
+
+    Reads the header of the ATDF file.
 
 AUTHOR:
 
-   Ashok Verma (ashokverma@ucla.edu)
-   Department of Earth, Planetary, and Space Sciences
-   University of California, Los Angeles
+   Dr. Ashok Kumar Verma (1,2)
+   1. Department of Earth, Planetary, and Space Sciences
+      University of California, Los Angeles, 90095, CA, USA.
+   2. NASA Goddard Space Flight Center, Greenbelt, 20771, MD, USA.
+   
+   Contact: ashokkumar.verma@nasa.gov
 
 """
-import binascii
 import bitstring as bs
 import functions as fn
 
@@ -52,24 +55,15 @@ __table2_format = 'uint:32, uint:8, uint:32, uint:12, uint:16, uint:8, uint:12, 
 __field_names = (__table1_field_names + __table2_field_names)
 
 
-def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-    bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-    return bits.zfill(8 * ((len(bits) + 7) // 8))
-
-
-def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
-    n = int(bits, 2)
-    return int2bytes(n).decode(encoding, errors)
-
-
-def int2bytes(i):
-    hex_string = '%x' % i
-    n = len(hex_string)
-    return binascii.unhexlify(hex_string.zfill(n + (n & 1)))
-
-
 # -------------------------------------------------------------------------------------------------------------------
-def check_table1_data(obj):
+def check_table1_data(obj: dict):
+    """
+
+    Check validity of the ATDF format.
+   
+    Args:
+        obj: A dictionary of Table 1 items.
+    """
     if obj["record_type1"] != 10:
         msg = "Item #3 (Record Type), in Table 3-1 (ATDF File Identification Logical Record Format): \n" \
               "Expected value: 10\n" \
@@ -86,6 +80,13 @@ def check_table1_data(obj):
 
 # -------------------------------------------------------------------------------------------------------------------
 def check_table2_data(obj):
+    """
+    
+    Check validity of the ATDF format.
+    
+    Args:
+        obj: A dictionary of Table 2 items.
+    """
     if obj["record_type2"] != 30:
         msg = "Item #3 (Record Type), in Table 3-2 (ATDF Transponder Logical Record Format): \n" \
               "Expected value: 30\n" \
@@ -97,11 +98,11 @@ def check_table2_data(obj):
 def header(hdr_raw):
     """
     Purpose:
-    Read header of RSR file, given just its full path name
+    Read header of ATDF file.
 
     args:
-        rsr_file (str):
-            Full path name of RSR file
+        hdr_raw (list):
+           list of bytes, where each element size is 288 bytes.
     """
     
     # extract header chunk
@@ -117,7 +118,7 @@ def header(hdr_raw):
     out_dict = {}
     for i, val in enumerate(unpack):
         if 'not_in_used' not in __field_names[i]:
-            if isinstance(val, str): val = text_from_bits(val)
+            if isinstance(val, str): val = fn.text_from_bits(val)
             out_dict.update({__field_names[i]: val})
     
     check_table1_data(out_dict)
