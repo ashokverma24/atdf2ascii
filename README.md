@@ -36,5 +36,19 @@ Python atdf2ascii.py -i input_file.tdf [options ...]
 
 NOTE:
 
-A manuscript describing this code's architecture, formulation, and usability has been submitted for publication in the SoftwareX Journal. 
-The citation information will be updated here once it has been accepted.  
+A manuscript describing this code's architecture, formulation, and usability has been accepected for publication in the SoftwareX Journal. 
+
+Please cite the software as follows:
+
+@article{VERMA2022101190,
+title = {A Python-based tool for constructing observables from the DSN’s closed-loop archival tracking data files},
+journal = {SoftwareX},
+volume = {19},
+pages = {101190},
+year = {2022},
+issn = {2352-7110},
+doi = {https://doi.org/10.1016/j.softx.2022.101190},
+url = {https://www.sciencedirect.com/science/article/pii/S2352711022001145},
+author = {Ashok Kumar Verma},
+keywords = {Radio science, ATDF, Closed-loop, DSN},
+}
