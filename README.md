@@ -23,14 +23,32 @@ Requriemnts:
 Python 3.6 and above
 
 #######################################################################################################
+Installation:
+
+pip install .
+
+For an editable/development install:
+
+pip install -e .
+
+#######################################################################################################
 Help Command:
 
-Python atdf2ascii.py -h
+atdf2ascii -h
 
 #######################################################################################################
 Command to process TRK-2-25 formatted DSN file:
 
-Python atdf2ascii.py -i input_file.tdf [options ...]
+atdf2ascii -i input_file.tdf [options ...]
+
+#######################################################################################################
+Programmatic use:
+
+from atdf2ascii import main
+
+main(input_file="input_file.tdf", output_dir="./outputs", proc_count=4, count_time=None,
+     doppler_one_way=True, doppler_two_way=True, doppler_three_way=True,
+     range_one_way=True, range_two_way=True)
 
 #######################################################################################################
 
