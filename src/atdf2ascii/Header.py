@@ -14,7 +14,7 @@ AUTHOR:
 
 """
 import bitstring as bs
-import functions as fn
+from . import functions as fn
 
 # Header contents of Table 3-1 of ATDF file
 

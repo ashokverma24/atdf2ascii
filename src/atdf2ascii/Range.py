@@ -16,7 +16,7 @@ AUTHOR:
 
 """
 
-import functions as fn
+from . import functions as fn
 
 
 # ===========================================================================

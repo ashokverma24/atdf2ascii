@@ -22,7 +22,7 @@ AUTHOR:
    Contact: ashokkumar.verma@nasa.gov
 
 """
-from functions import get_date, MHz
+from .functions import get_date, MHz
 from decimal import Decimal
 
 

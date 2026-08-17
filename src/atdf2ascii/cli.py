@@ -47,12 +47,12 @@ import sys
 import traceback
 from io import StringIO
 
-import Header as hd
-import Reader as rd
-import functions as fn
-from Doppler import Doppler
-from Ramp import Ramp
-from Range import Range
+from . import Header as hd
+from . import Reader as rd
+from . import functions as fn
+from .Doppler import Doppler
+from .Ramp import Ramp
+from .Range import Range
 
 
 # -------------------------------------------------------------------------------------------------------------------
@@ -75,6 +75,7 @@ def bytes_from_file(filename: str,
 # -------------------------------------------------------------------------------------------------------------------
 def print_header_info(chunks_list: list,
                       count_time: list,
+                      proc_count: int,
                       doppler_two_way: bool,
                       doppler_one_way: bool,
                       doppler_three_way: bool,
@@ -85,6 +86,7 @@ def print_header_info(chunks_list: list,
     Args:
         chunks_list: The list of bytes where each element is 288 bytes long.
         count_time : The count time.
+        proc_count: The number of available processors.
         doppler_two_way: Boolean flag to indicate include or exclude 2-Way Doppler measurements.
         doppler_one_way: Boolean flag to indicate include or exclude 1-Way Doppler measurements.
         range_two_way: Boolean flag to indicate include or exclude 2-Way Range measurements.
@@ -93,9 +95,6 @@ def print_header_info(chunks_list: list,
     Returns:
 
     """
-    # read all options
-    global options
-    
     # read header
     hdr = hd.header(chunks_list)
     
@@ -113,7 +112,7 @@ def print_header_info(chunks_list: list,
     sc_id = hdr['sc_id']
     
     # time of the last observation
-    start_time_obs, end_time_obs = rd.get_all_items(chunks_list, options.proc_count, True)
+    start_time_obs, end_time_obs = rd.get_all_items(chunks_list, proc_count, True)
     if start_time_obs is None: start_time_obs = start_time_hdr
     if end_time_obs is None: end_time_obs = end_time_hdr
     
@@ -136,7 +135,11 @@ def print_header_info(chunks_list: list,
 
 # -------------------------------------------------------------------------------------------------------------------
 # main function
-def main(doppler_one_way: bool,
+def main(input_file: str,
+         output_dir: str,
+         proc_count: int,
+         count_time: list,
+         doppler_one_way: bool,
          doppler_two_way: bool,
          doppler_three_way : bool,
          range_one_way: bool,
@@ -144,46 +147,47 @@ def main(doppler_one_way: bool,
     """
 
     Args:
+        input_file: Path to the input ATDF file.
+        output_dir: Path to the output directory.
+        proc_count: The number of available processors.
+        count_time: The count time, in sec, to which the Doppler measurements are to be compressed.
         doppler_one_way: Boolean flag to indicate include or exclude 1-Way Doppler measurements.
         doppler_two_way: Boolean flag to indicate include or exclude 2-Way Doppler measurements.
         range_one_way: Boolean flag to indicate include or exclude 1-Way Range measurements.
         range_two_way: Boolean flag to indicate include or exclude 2-Way Range measurements.
     """
-    # read all options
-    global options
-    count_time = options.count_time
     ts = fn.time_now()
-    
+
     # output directory
-    out_dir = os.path.abspath(options.output_dir)
+    out_dir = os.path.abspath(output_dir)
     if not os.path.exists(out_dir):
         try:
             os.mkdir(out_dir)
         except Exception:
             raise OSError("\n\nCan't create output directory (%s)!" % out_dir)
-    
+
     # input and output files
-    input_file = options.input_file.strip()
+    input_file = input_file.strip()
     out_file = input_file.split("/")[-1]
     out_file = out_dir + "/" + out_file.split(".")[0]
-    
+
     # open output files
     out_obs = open(out_file + ".msr", "w")
     out_ramp = open(out_file + ".ramp", "w")
-    
+
     # read all bytes
     all_bytes = bytes_from_file(input_file)
-    
+
     # get list of chunks
     chunks_list = list(all_bytes)
-    
+
     # get header info
-    transponder_freq, end_date = print_header_info(chunks_list, count_time, doppler_two_way,
+    transponder_freq, end_date = print_header_info(chunks_list, count_time, proc_count, doppler_two_way,
                                                    doppler_one_way, doppler_three_way,
                                                    range_two_way, range_one_way)
-    
+
     # unpack rest of data
-    unpacked_data = rd.get_all_items(chunks_list, options.proc_count)
+    unpacked_data = rd.get_all_items(chunks_list, proc_count)
     
     # extract and write ramp records
     last_ramps = Ramp(unpacked_data.ramp, out_ramp, end_date).ramp_table()
@@ -225,7 +229,7 @@ def main(doppler_one_way: bool,
 
 
 # -------------------------------------------------------------------------------------------------------------------
-if __name__ == '__main__':
+def run():
     try:
         parser = optparse.OptionParser(formatter=optparse.TitledHelpFormatter(), usage=globals()['__doc__'])
         parser.add_option('-i', '--input_file', action='store', default='', help='Path to the ATDF data file.')
@@ -288,7 +292,8 @@ if __name__ == '__main__':
         else:
             fn.raise_error("The input ATDF file is missing (use -h for help)")
         
-        main(doppler_one_way, doppler_two_way, doppler_three_way,
+        main(options.input_file, options.output_dir, options.proc_count, options.count_time,
+             doppler_one_way, doppler_two_way, doppler_three_way,
              range_one_way, range_two_way)
         sys.exit()
     except KeyboardInterrupt as e:  # Ctrl-C
@@ -301,5 +306,9 @@ if __name__ == '__main__':
         sys.stderr = error
         traceback.print_exc()
         fn.color_txt(str(error.getvalue()), 'red')
-        sys.modules[__name__].__dict__.clear()
         raise SystemExit()
+
+
+# -------------------------------------------------------------------------------------------------------------------
+if __name__ == '__main__':
+    run()
