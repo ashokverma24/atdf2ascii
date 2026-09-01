@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-atdf2ascii = "atdf2ascii.cli:run"
+atdf2ascii = "atdf2ascii.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

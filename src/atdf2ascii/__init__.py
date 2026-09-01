@@ -1,5 +1,10 @@
-from .cli import main, run
+from importlib.metadata import PackageNotFoundError, version
 
-__version__ = "1.0.0"
+from .cli import atdf_to_ascii
 
-__all__ = ["main", "run", "__version__"]
+try:
+    __version__ = version("atdf2ascii")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
+__all__ = ["__version__", "atdf_to_ascii"]

@@ -2,8 +2,8 @@
 """
 USAGE    
 
-    python atdf2ascii.py [-h,--help] 
-    python atdf2ascii.py -i input_file [options...]
+    atdf2ascii [-h,--help] 
+    atdf2ascii -i input_file [options...]
     
 DESCRIPTION
 
@@ -135,22 +135,22 @@ def print_header_info(chunks_list: list,
 
 # -------------------------------------------------------------------------------------------------------------------
 # main function
-def main(input_file: str,
-         output_dir: str,
-         proc_count: int,
-         count_time: list,
-         doppler_one_way: bool,
-         doppler_two_way: bool,
-         doppler_three_way : bool,
-         range_one_way: bool,
-         range_two_way: bool):
+def atdf_to_ascii(input_file: str,
+                  output_dir: str,
+                  proc_count: int,
+                  count_time: list,
+                  doppler_one_way: bool,
+                  doppler_two_way: bool,
+                  doppler_three_way : bool,
+                  range_one_way: bool,
+                  range_two_way: bool):
     """
 
     Args:
         input_file: Path to the input ATDF file.
         output_dir: Path to the output directory.
         proc_count: The number of available processors.
-        count_time: The count time, in sec, to which the Doppler measurements are to be compressed.
+        count_time: The count time, in sec, to which the Doppler measurements are to be compressed. If None, ATDF's original compression value is used by default.
         doppler_one_way: Boolean flag to indicate include or exclude 1-Way Doppler measurements.
         doppler_two_way: Boolean flag to indicate include or exclude 2-Way Doppler measurements.
         range_one_way: Boolean flag to indicate include or exclude 1-Way Range measurements.
@@ -229,7 +229,7 @@ def main(input_file: str,
 
 
 # -------------------------------------------------------------------------------------------------------------------
-def run():
+def main():
     try:
         parser = optparse.OptionParser(formatter=optparse.TitledHelpFormatter(), usage=globals()['__doc__'])
         parser.add_option('-i', '--input_file', action='store', default='', help='Path to the ATDF data file.')
@@ -292,9 +292,9 @@ def run():
         else:
             fn.raise_error("The input ATDF file is missing (use -h for help)")
         
-        main(options.input_file, options.output_dir, options.proc_count, options.count_time,
-             doppler_one_way, doppler_two_way, doppler_three_way,
-             range_one_way, range_two_way)
+        atdf_to_ascii(options.input_file, options.output_dir, options.proc_count, options.count_time,
+                     doppler_one_way, doppler_two_way, doppler_three_way,
+                     range_one_way, range_two_way)
         sys.exit()
     except KeyboardInterrupt as e:  # Ctrl-C
         raise e
@@ -311,4 +311,4 @@ def run():
 
 # -------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    run()
+    main()
