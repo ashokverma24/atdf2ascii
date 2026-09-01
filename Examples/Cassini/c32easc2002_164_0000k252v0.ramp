@@ -1,7 +1,7 @@
 #=======================================================================================================                      
 #NOTE:
 #Raw File: https://atmos.nmsu.edu/pdsd/archive/data/co-ss-rss-1-sce1-v10/cors_0022/sce1_164/tdf/c32easc2002_164_0000k252v0.tdf
-#Command Line: python atdf2ascii.py -i c32easc2002_164_0000k252v0.tdf -c 1 --xr2 --xd3
+#Command Line: atdf2ascii -i c32easc2002_164_0000k252v0.tdf -c 1 --xr2 --xd3
 #=======================================================================================================   
 #                Start-Time,                       End-Time,    Station,  Band,            Frequency (Hz),   Rate (Hz/sec)
 14-Jun-2002 00:40:29.000000,    14-Jun-2002 00:40:33.000000,     DSS 45,     X,     7175237920.0000000000,        0.000000

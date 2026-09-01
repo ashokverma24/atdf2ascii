@@ -1,7 +1,7 @@
 #=======================================================================================================                             
 #NOTE:
 #Raw File: https://atmos.nmsu.edu/pdsd/archive/data/co-ss-rss-1-sce1-v10/cors_0022/sce1_164/tdf/c32easc2002_164_0000k252v0.tdf
-#Command Line: python atdf2ascii.py -i c32easc2002_164_0000k252v0.tdf -c 1 --xr2 --xd3
+#Command Line: atdf2ascii -i c32easc2002_164_0000k252v0.tdf -c 1 --xr2 --xd3
 #=======================================================================================================   
 #            time_tag (UTC),       Data Type,  scID,       Xmtr,       Rcvr,  Chnl,    UL,    DL,    Ex,   CT (sec),     Rng-LC,             Observed (Hz),             Ref-Freq (Hz),  XmtrDly (nsec),  RcvrDly (nsec),    ScDly (nsec)
 13-Jun-2002 14:06:30.500000,   2-Way-Doppler,    82,     DSS 65,     DSS 65,     2,     X,     X,     S,        1.0,          0,          12682.0000000000,     2117000832.0000000000,        0.000000,        0.000000,        0.000000

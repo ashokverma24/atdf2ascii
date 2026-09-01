@@ -1,7 +1,7 @@
 #=======================================================================================================
 #NOTE:
 #Raw File: https://pds-geosciences.wustl.edu/mgn/mgn-v-rss-1-tracking-v1/mg_2601/TDF/3093099a.tdf
-#Command Line: python atdf2ascii.py -i 3093099a.tdf -c 10, 60
+#Command Line: atdf2ascii -i 3093099a.tdf -c 10, 60
 #=======================================================================================================
 #            time_tag (UTC),       Data Type,  scID,       Xmtr,       Rcvr,  Chnl,    UL,    DL,    Ex,   CT (sec),     Rng-LC,             Observed (Hz),             Ref-Freq (Hz),  XmtrDly (nsec),  RcvrDly (nsec),    ScDly (nsec)
 03-Apr-1993 23:51:25.000000,   1-Way-Doppler,    18,        S/C,     DSS 42,     2,     S,     X,     S,       10.0,          0,            670.7551330089,     2297963786.0000000000,        0.000000,        0.000000,        0.000000

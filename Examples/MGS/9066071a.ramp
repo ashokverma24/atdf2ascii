@@ -1,7 +1,7 @@
 #=======================================================================================================
 #NOTE:
 #Raw File: https://pds-geosciences.wustl.edu/mgs/mgs-m-rss-1-map-v1/mors_0402/tdf/9066071a.tdf
-#Command Line: python atdf2ascii.py -i 9066071a.tdf -c 60 --xd1
+#Command Line: atdf2ascii -i 9066071a.tdf -c 60 --xd1
 #=======================================================================================================    
 #                Start-Time,                       End-Time,    Station,  Band,            Frequency (Hz),   Rate (Hz/sec)
 07-Mar-1999 11:46:54.000000,    07-Mar-1999 11:47:00.000000,     DSS 34,     X,     7164234321.7511196136,        0.000000
