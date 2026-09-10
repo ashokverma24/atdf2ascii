@@ -1,7 +1,6 @@
 # atdf2ascii
 
-#######################################################################################################
-Abstract:
+## Abstract
 
 Radio science data collected from NASA’s Deep Space Networks (DSNs) are made available 
 in various formats through NASA’s Planetary Data System (PDS). The majority of these data are 
@@ -16,30 +15,68 @@ improved understanding of the solar system. The preprocessing tool presented in 
 possible to revisit such historical data using modern techniques and software to conduct crucial radio 
 science experiments.
 
-
-#######################################################################################################
-Requriemnts:
+## Requirements
 
 Python 3.6 and above
 
-#######################################################################################################
-Help Command:
+## Installation
 
-Python atdf2ascii.py -h
+To install the library, clone this repository to your local machine:
 
-#######################################################################################################
-Command to process TRK-2-25 formatted DSN file:
+```bash
+git clone https://github.com/ashokverma24/atdf2ascii.git
+cd atdf2ascii
+```
 
-Python atdf2ascii.py -i input_file.tdf [options ...]
+and activate your pip/conda environment:
 
-#######################################################################################################
+```bash
+# source your-env/bin/activate
+# conda activate your-env 
+```
 
-NOTE:
+You can then install the library from inside the `atdf2ascii/` directory with
 
-A manuscript describing this code's architecture, formulation, and usability has been accepected for publication in the SoftwareX Journal. 
+```bash
+pip install .
+```
 
+For an editable/development install:
+
+```bash
+pip install -e .
+```
+
+## Usage
+
+After installation, you can use the following command to process TRK-2-25 formatted DSN file from the command line:
+
+```bash
+atdf2ascii -i input_file.tdf [options ...]
+```
+
+All possible processing options are described in the help command:
+
+```bash
+atdf2ascii -h
+```
+
+To use the library programmatically, you can import the `atdf_to_ascii` function directly from `atdf2ascii`:
+
+```python
+from atdf2ascii import atdf_to_ascii
+
+atdf_to_ascii(input_file="input_file.tdf", output_dir="./outputs", proc_count=4, count_time=None,
+     doppler_one_way=True, doppler_two_way=True, doppler_three_way=True,
+     range_one_way=True, range_two_way=True)
+```
+
+## Citation
+
+A manuscript describing this code's architecture, formulation, and usability has been accepted for publication in the SoftwareX Journal.
 Please cite the software as follows:
 
+```latex
 @article{VERMA2022101190,
 title = {A Python-based tool for constructing observables from the DSN’s closed-loop archival tracking data files},
 journal = {SoftwareX},
@@ -52,3 +89,4 @@ url = {https://www.sciencedirect.com/science/article/pii/S2352711022001145},
 author = {Ashok Kumar Verma},
 keywords = {Radio science, ATDF, Closed-loop, DSN},
 }
+```

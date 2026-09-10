@@ -14,9 +14,9 @@ AUTHOR:
 """
 import bitstring as bs
 import multiprocessing as mp
-import functions as fn
-import atdf_reader_I as atdfRI
-import atdf_reader_II as atdfRII
+from . import functions as fn
+from . import atdf_reader_I as atdfRI
+from . import atdf_reader_II as atdfRII
 
 
 # Header contents of Table 3-3 of ATDF file 

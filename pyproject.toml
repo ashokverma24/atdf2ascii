@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atdf2ascii"
+version = "1.0.0"
+description = "A Python-based tool for constructing Doppler and range observables from the DSN's closed-loop archival tracking data files (ATDFs)."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.6"
+authors = [
+    { name = "Ashok Kumar Verma", email = "ashokkumar.verma@nasa.gov" },
+]
+dependencies = [
+    "numpy",
+    "bitstring",
+    "termcolor",
+]
+
+[project.scripts]
+atdf2ascii = "atdf2ascii.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

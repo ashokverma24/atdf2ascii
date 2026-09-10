@@ -23,7 +23,7 @@ AUTHOR:
 
 """
 
-from functions import get_date, MHz
+from .functions import get_date, MHz
 from decimal import Decimal as D
 
 

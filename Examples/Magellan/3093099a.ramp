@@ -1,7 +1,7 @@
 #=======================================================================================================
 #NOTE:
 #Raw File: https://pds-geosciences.wustl.edu/mgn/mgn-v-rss-1-tracking-v1/mg_2601/TDF/3093099a.tdf
-#Command Line: python atdf2ascii.py -i 3093099a.tdf -c 10, 60
+#Command Line: atdf2ascii -i 3093099a.tdf -c 10, 60
 #=======================================================================================================   
 #                Start-Time,                       End-Time,    Station,  Band,            Frequency (Hz),   Rate (Hz/sec)
 03-Apr-1993 09:26:34.000000,    03-Apr-1993 09:29:14.000000,     DSS 61,     S,     2116052350.1435041428,       -2.635200

@@ -1,7 +1,7 @@
 #=======================================================================================================
 #NOTE:
 #Raw File: https://pds-geosciences.wustl.edu/mgs/mgs-m-rss-1-map-v1/mors_0402/tdf/9066071a.tdf
-#Command Line: python atdf2ascii.py -i 9066071a.tdf -c 60 --xd1
+#Command Line: atdf2ascii -i 9066071a.tdf -c 60 --xd1
 #=======================================================================================================
 #            time_tag (UTC),       Data Type,  scID,       Xmtr,       Rcvr,  Chnl,    UL,    DL,    Ex,   CT (sec),     Rng-LC,             Observed (Hz),             Ref-Freq (Hz),  XmtrDly (nsec),  RcvrDly (nsec),    ScDly (nsec)
 07-Mar-1999 19:27:35.000000,   2-Way-Doppler,    94,     DSS 34,     DSS 34,     2,     X,     X,     S,       60.0,          0,         -19094.1917333329,     2114118912.0000000000,        0.000000,        0.000000,        0.000000

@@ -16,11 +16,11 @@ AUTHOR:
 
 """
 
-import functions as fn
+from . import functions as fn
 import numpy as np
 
 # ===========================================================================
-from functions import dic_attrs
+from .functions import dic_attrs
 
 
 def store_record(rec: dict,
